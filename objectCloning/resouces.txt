@@ -1,0 +1,2 @@
+https://scotch.io/bar-talk/copying-objects-in-javascript
+https://blog.ricardofilipe.com/post/immutable-changes-in-js
