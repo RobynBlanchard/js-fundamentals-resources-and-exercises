@@ -100,10 +100,12 @@ Promise.all([
   fetchProducts('tech'),
   fetchProducts('home'),
   fetchProducts('jewellery')
-]).then(products => {
-  console.log(products);
-  // products.forEach(product => console.log(product));
-});
+])
+  .then(products => {
+    console.log(products);
+    // products.forEach(product => console.log(product));
+  })
+  .catch(err => console.log(err));
 
 // Create an array of 5 promises, pass the array to Promise.race and see which one finishes first
 
@@ -113,6 +115,8 @@ Promise.race([
   fetchProducts('tech'),
   fetchProducts('home'),
   fetchProducts('jewellery')
-]).then(products => {
-  console.log(products);
-});
+])
+  .then(products => {
+    console.log(products);
+  })
+  .catch(err => console.log(err));
