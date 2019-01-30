@@ -15,6 +15,8 @@
   * Deep copy the object
  */
 
+ // Excersises here look fine to me, will need the dependencies to test.
+
 const person = {
   name: 'Bob',
   birthYear: 1990,
@@ -41,6 +43,8 @@ const spreadPersonCopy = { ...person, nestedChild: { ...person.nestedChild } };
 const copy = obj => {
   let clone = {};
   for (let property in obj) {
+    // in this case, obj[property] != null is probably not necessary, if (obj[property]) should be enough
+    // if you do use !=, remember the same rule applies as ===, use double equals, !==
     if (obj[property] != null && typeof obj[property] === 'object') {
       clone[property] = copy(obj[property]);
     } else {
