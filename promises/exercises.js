@@ -4,35 +4,28 @@
 
 // Create a function that returns a promise, this promise will resolve after 1000 ms
 // - Function returns a resolved promise and is handled by the consuming function
-import { setTimeout } from 'timers';
 
-const newPromise = () => {
-  return new Promise(function(resolve) {
-    setTimeout(function() {
-      return resolve('success');
+const myFunction = () =>
+  new Promise(resolve => {
+    setTimeout(() => {
+      return resolve('Resolved!');
     }, 1000);
   });
-};
 
-newPromise().then(res => console.log(res));
+myFunction().then(res => console.log(res));
 
 // Create a function that returns a promise, this promise will either be resolved or rejected (50/50) after 1000 ms
 // - Function returns a promise that may or may not resolve
 
-const newPromise2 = () => {
-  return new Promise(function(resolve, reject) {
-    setTimeout(function() {
-      const result = Math.random(0, 2).toFixed(0);
-      if (result === '1') {
-        return resolve('success');
-      } else {
-        return reject('failure');
-      }
-    }, 1000);
+const myFunction2 = () => {
+  const trueOrFalse = Math.round(Math.random()) === 1;
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => (trueOrFalse ? resolve('True!') : reject('False!')), 1000);
   });
 };
 
-newPromise2()
+myFunction2()
   .then(res => console.log(res))
   .catch(err => console.log(err));
 
@@ -42,81 +35,54 @@ newPromise2()
 // - Create a chain of 5 promises, where the last handler, the catch, will handle any rejected promises
 // - Create a chain of 5 promises, where the last handler is a finally block that will always(?) run
 
-const allProducts = {
-  clothes: ['shoe', 'top'],
-  cards: ['birthday', 'anniversary'],
-  tech: ['laptop-cover', 'mousepad'],
-  home: ['wardrobe', 'chair'],
-  jewellery: ['neckalce', 'bracelet']
-};
+const myFunc3 = greeting => {
+  const allowedGreetings = ['hello', 'hola', 'bonjour', 'ciao', 'hej'];
 
-const fetchProducts = category => {
-  return new Promise(function(resolve, reject) {
-    setTimeout(function() {
-      if (allProducts[category]) {
-        return resolve(allProducts[category]);
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (allowedGreetings.indexOf(greeting) !== -1) {
+        return resolve(`${greeting}, nice to meet you`);
       }
-      return reject('invalid category');
+      reject("Sorry I don't know what one");
     }, 1000);
   });
 };
 
-fetchProducts('cards')
-  .then(productsCards => {
-    console.log(productsCards);
-    fetchProducts('clothes')
-      .then(productsClothes => {
-        console.log(productsClothes);
-        fetchProducts('tech')
-          .then(productsTech => {
-            console.log(productsTech);
-            fetchProducts('home')
-              .then(productsHome => {
-                console.log(productsHome);
-                fetchProducts('jewellery')
-                  .then(productsJewellery => {
-                    console.log(productsJewellery);
-                  })
-                  .catch(err => console.log(err))
-                  .finally(() => console.log('finished fetching cards'));
-              })
-              .catch(err => console.log(err))
-              .finally(() => console.log('finished fetching clothes'));
-          })
-          .catch(err => console.log(err))
-          .finally(() => console.log('finished fetching tech'));
-      })
-      .catch(err => console.log(err))
-      .finally(() => console.log('finished fetching home'));
+myFunc3('hello')
+  .then(res => {
+    console.log(res);
+    return myFunc3('hola');
+  })
+  .then(res => {
+    console.log(res);
+    return myFunc3('bonjour');
+  })
+  .then(res => {
+    console.log(res);
+    return myFunc3('ciao');
+  })
+  .then(res => {
+    console.log(res);
+    return myFunc3('hej');
+  })
+  .then(res => {
+    console.log(res);
   })
   .catch(err => console.log(err))
-  .finally(() => console.log('finished fetching jewellery'));
+  .finally(() => console.log('we are done here'));
 
 // Create an array of 5 promises, pass the array to Promise.all and handle the outcome
 
-Promise.all([
-  fetchProducts('cards'),
-  fetchProducts('clothes'),
-  fetchProducts('tech'),
-  fetchProducts('home'),
-  fetchProducts('jewellery')
-])
-  .then(products => {
-    console.log(products);
-    // products.forEach(product => console.log(product));
-  })
-  .catch(err => console.log(err));
+Promise.all(
+  ['hello', 'hola', 'bonjour', 'ciao', 'hej'].map(greeting => myFunc3(greeting))
+).then(res => console.log(res));
 
 // Create an array of 5 promises, pass the array to Promise.race and see which one finishes first
 
-Promise.race([
-  fetchProducts('cards'),
-  fetchProducts('clothes'),
-  fetchProducts('tech'),
-  fetchProducts('home'),
-  fetchProducts('jewellery')
-])
-  .then(products => {
-    console.log(products);
+Promise.race(
+  ['hello', 'hola', 'bonjour', 'ciao', 'hej'].map(greeting => myFunc3(greeting))
+)
+  .then(res => {
+    console.log(res);
   })
   .catch(err => console.log(err));
