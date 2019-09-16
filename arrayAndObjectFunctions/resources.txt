@@ -1,0 +1,11 @@
+Map
+Find
+Filter
+Some
+Keys
+forEach
+Entries
+IndexOf
+
+https://github.com/jwill9999/JavaScript-Array-Interview-Practice
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter#
